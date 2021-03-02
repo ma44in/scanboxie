@@ -1,0 +1,14 @@
+---
+commandsets:
+  default:
+    - commandstring: "mpc clear"
+    - commandstring: "mpc add \"{{index .Values 0}}\""
+    - commandstring: "mpc play"
+  mpc_stop:
+    - commandstring: "mpc stop"
+  mpc_play:
+    - commandstring: "mpc play"
+  mpc_pause:
+    - commandstring: "mpc pause"
+  mpc_next:
+    - commandstring: "mpc next"

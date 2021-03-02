@@ -1,0 +1,74 @@
+---
+- hosts: all
+  gather_facts: false
+  vars:
+    scanboxie_event_file_path: "/dev/input/by-id/usb-Netum._HIDKB_18502-event-kbd"
+    scanboxie_barcodemap_file_path: "/var/lib/mpd/music/Musik/barcodes.csv"
+  tasks:
+
+  # MPD AND MPC SETUP
+
+  - name: "install mpd (music player deamon) and mpc (music player client)"
+    tags: ["mpd"]
+    become: true
+    ansible.builtin.package:
+      name:
+        - mpd
+        - mpc
+      state: latest
+
+  - name: "copy mpd config"
+    tags: ["mpd"]
+    become: true 
+    ansible.builtin.copy:
+      src: "{{ playbook_dir }}/files/mpd.conf"
+      dest: /etc/mpd.conf
+
+  - name: restart mpd service"
+    tags: ["mpd"]
+    become: true
+    ansible.builtin.systemd:
+      state: restarted
+      name: mpd
+
+  # SCANBOXIE SETUP
+
+  - name: "copy scanboxie binary"
+    tags: ["copy-scanboxie-binary"]
+    become: true 
+    ansible.builtin.copy:
+      src: "{{ playbook_dir }}/../scanboxie-arm"
+      dest: /usr/bin/scanboxie
+      mode: 0555
+    notify: "restart scanboxie service"
+
+  - name: "copy scanboxie config"
+    become: true 
+    ansible.builtin.copy:
+      src: "{{ playbook_dir }}/files/scanboxie.yml"
+      dest: /etc/scanboxie.yml
+    notify: "restart scanboxie service"
+
+  - name: "copy scanboxie systemd unit file"
+    become: true 
+    ansible.builtin.template:
+      src: "{{ playbook_dir }}/files/scanboxie.service.j2"
+      dest: "/etc/systemd/system/scanboxie.service"
+    notify: "restart scanboxie service"
+
+  - name: "enable systemd scanboxie service"
+    become: true
+    ansible.builtin.systemd:
+      state: started
+      enabled: true
+      daemon_reload: yes
+      name: scanboxie
+    notify: "restart scanboxie service"
+
+  handlers:
+  - name: "restart scanboxie service"
+    become: true
+    ansible.builtin.systemd:
+      name: scanboxie
+      state: restarted
+  

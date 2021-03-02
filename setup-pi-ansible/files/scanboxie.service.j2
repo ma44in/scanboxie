@@ -1,0 +1,14 @@
+[Unit]
+Description=scanboxie
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/scanboxie {{ scanboxie_event_file_path }} {{ scanboxie_barcodemap_file_path }} --watch
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+RestartSec=1
+User=pi
+
+[Install]
+WantedBy=multi-user.target

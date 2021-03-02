@@ -1,0 +1,7 @@
+vendor/
+scanboxie
+scanboxie-arm
+!pkg/scanboxie
+*.svg
+mybarcode.csv
+out.html
