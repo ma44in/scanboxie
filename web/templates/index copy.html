@@ -1,0 +1,127 @@
+{{define "3_rows_4_cols_page"}}
+<table>
+ 
+  <tr>
+    <td>{{ .GetBarcodeSvg 0 }}</td>
+    <td>{{ .GetBarcodeSvg 1 }}</td>
+    <td>{{ .GetBarcodeSvg 2 }}</td>
+  </tr>
+  <tr>
+    <td>{{ .GetBarcodeSvg 3 }}</td>
+    <td>{{ .GetBarcodeSvg 4 }}</td>
+    <td>{{ .GetBarcodeSvg 5 }}</td>
+  </tr>
+  <tr>
+    <td>{{ .GetBarcodeSvg 6 }}</td>
+    <td>{{ .GetBarcodeSvg 7 }}</td>
+    <td>{{ .GetBarcodeSvg 8 }}</td>
+  </tr>
+  <tr>
+    <td>{{ .GetBarcodeSvg 9 }}</td>
+    <td>{{ .GetBarcodeSvg 10 }}</td>
+    <td>{{ .GetBarcodeSvg 11 }}</td>
+  </tr>
+</table>
+{{ end }}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="static/css/layout.css">
+</head>
+
+<body>
+  <div class="mypage odd">
+    <div class="top">
+      {{template "3_rows_4_cols_page" (index .Pages 0)}}
+    </div>
+    <div class="bottom">
+      <table>
+        <tr>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY01.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY02.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY03.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY04.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY05.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY06.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY07.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY08.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY09.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY10.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY11.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY12.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY13.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY14.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY15.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY16.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY17.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY18.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY19.svg" /></td>
+          <td><img class="barcode barcode-small" src="./output/XX00PLAY20.svg" /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="mypage even">
+    <div class="top">
+      <table>
+        <tr>
+          <td><img class="barcode" src="./output/XX00PLAY.svg" /></td>
+          <td><img class="barcode" src="./output/XX00PAUSE.svg" /></td>
+          <td><img class="barcode" src="./output/XX00STOP.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode" src="./output/XX00NEXT.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLUP.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLDOWN.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode" src="./output/XX00RANDOMON.svg" /></td>
+          <td><img class="barcode" src="./output/XX00RANDOMOFF.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLDOWN.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode" src="./output/XX00RANDOMON.svg" /></td>
+          <td><img class="barcode" src="./output/XX00RANDOMOFF.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLDOWN.svg" /></td>
+        </tr>
+      </table>
+    </div>
+    <div class="bottom">
+      <table>
+        <tr>
+          <td><img class="barcode" src="./output/XX00PLAY.svg" /></td>
+          <td><img class="barcode" src="./output/XX00PAUSE.svg" /></td>
+          <td><img class="barcode" src="./output/XX00STOP.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode" src="./output/XX00NEXT.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLUP.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLDOWN.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode" src="./output/XX00RANDOMON.svg" /></td>
+          <td><img class="barcode" src="./output/XX00RANDOMOFF.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLDOWN.svg" /></td>
+        </tr>
+        <tr>
+          <td><img class="barcode" src="./output/XX00RANDOMON.svg" /></td>
+          <td><img class="barcode" src="./output/XX00RANDOMOFF.svg" /></td>
+          <td><img class="barcode" src="./output/XX00VOLDOWN.svg" /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>

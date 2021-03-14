@@ -1,0 +1,56 @@
+{{define "3_rows_4_cols_page"}}
+<table>
+ 
+  <tr>
+    <td>{{ .GetBarcodeSvg 0 }}</td>
+    <td>{{ .GetBarcodeSvg 1 }}</td>
+    <td>{{ .GetBarcodeSvg 2 }}</td>
+  </tr>
+  <tr>
+    <td>{{ .GetBarcodeSvg 3 }}</td>
+    <td>{{ .GetBarcodeSvg 4 }}</td>
+    <td>{{ .GetBarcodeSvg 5 }}</td>
+  </tr>
+  <tr>
+    <td>{{ .GetBarcodeSvg 6 }}</td>
+    <td>{{ .GetBarcodeSvg 7 }}</td>
+    <td>{{ .GetBarcodeSvg 8 }}</td>
+  </tr>
+  <tr>
+    <td>{{ .GetBarcodeSvg 9 }}</td>
+    <td>{{ .GetBarcodeSvg 10 }}</td>
+    <td>{{ .GetBarcodeSvg 11 }}</td>
+  </tr>
+</table>
+{{ end }}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="static/css/layout.css">
+</head>
+
+<body>
+  {{range $index, $Page := .Pages}}
+  INDEX: {{  $index }} <br/>
+
+  <div class="mypage odd">
+    {{ if mod $index 2 }}
+    <div class="top">
+      {{template "3_rows_4_cols_page" $Page}}
+    </div>
+    {{else}}
+    <div class="bottom">
+      {{template "3_rows_4_cols_page" $Page}}
+    </div>
+    {{end}}
+
+    
+   
+  </div>
+  {{end}}
+</body>
+
+</html>

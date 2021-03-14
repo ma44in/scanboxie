@@ -1,32 +1,87 @@
 package scanboxie
 
 import (
+	"bytes"
 	"encoding/csv"
 	"fmt"
+	"image/color"
 	"io"
 	"os"
 
 	"github.com/fsnotify/fsnotify"
+
+	svg "github.com/ajstarks/svgo"
+	"github.com/boombuler/barcode/code128"
 )
 
 // BarcodeConfig stores a map of barcodes to directories
 type BarcodeConfig struct {
-	path           string
-	BarcodeActions map[string]BarcodeAction
+	path              string
+	BarcodeActions    []BarcodeAction
+	barcodeActionsMap map[string]*BarcodeAction
+}
+
+// GetBarcodeAction returns a BarcodeAction based on the given barcode
+func (bc *BarcodeConfig) GetBarcodeAction(barcode string) *BarcodeAction {
+	return bc.barcodeActionsMap[barcode]
 }
 
 // BarcodeAction ...
 type BarcodeAction struct {
-	ActionKey string
-	Values    []string
+	Barcode         string
+	ActionKey       string
+	BookletPageType string
+	Values          []string
+}
+
+// GetBarcodeSvg returns Barcode Image as SVG
+func (ba BarcodeAction) GetBarcodeSvg() string {
+	// Thx to: https://github.com/boombuler/barcode/issues/57
+
+	bc, err := code128.Encode(ba.Barcode)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := new(bytes.Buffer)
+	canvas := svg.New(buf)
+
+	height := 100
+	bounds := bc.Bounds()
+	//canvas.Startview(bounds.Dx(), height, 0, 0, 100, 100)
+	//canvas.Startpercent(bounds.Dx(), 100, "viewBox=\"0 0 100 100\"")
+
+	// TODO heigth 50  problem ... still scales with aspect ratio
+	canvas.Startraw("preserveAspectRatio=\"none\"", fmt.Sprintf("viewBox=\"0 0 %d 50\"", bounds.Dx()))
+
+	for x := bounds.Min.X; x < bounds.Max.X; x++ {
+		if bc.At(x, bounds.Min.Y) == color.Black {
+			start := x
+			x++
+
+			for x < bounds.Max.X && bc.At(x, bounds.Min.Y) == color.Black {
+				x++
+			}
+
+			canvas.Rect(start, 0, x-start, height, "fill:black")
+		}
+	}
+
+	canvas.End()
+	return buf.String()
 }
 
 // NewBarcodeConfig create a new BarcodeConfig from given json file
 func NewBarcodeConfig(path string, watchForChanges bool) (*BarcodeConfig, error) {
-	barcodeConfig := BarcodeConfig{
-		path:           path,
-		BarcodeActions: make(map[string]BarcodeAction),
-	}
+	// barcodeConfig := BarcodeConfig{
+	// 	path:           path,
+	// 	BarcodeActions: make(map[string]BarcodeAction),
+	// }
+
+	var barcodeConfig BarcodeConfig
+	barcodeConfig.path = path
+	barcodeConfig.BarcodeActions = []BarcodeAction{}
+	barcodeConfig.barcodeActionsMap = make(map[string]*BarcodeAction)
 
 	barcodeConfig.readConfigfile()
 	if watchForChanges {
@@ -46,6 +101,11 @@ func (bc *BarcodeConfig) readConfigfile() error {
 	}
 
 	bc.BarcodeActions = barcodeActions
+
+	// Add BarcodeAction to Map for easier lookup
+	for _, barcodeAction := range barcodeActions {
+		bc.barcodeActionsMap[barcodeAction.Barcode] = &barcodeAction
+	}
 
 	return nil
 }
@@ -121,7 +181,7 @@ func (bc *BarcodeConfig) watchForChanges() error {
 
 // ReadCsv accepts a file and returns its content as a multi-dimentional type
 // with lines and each column. Only parses to string type.
-func ReadCsv(filename string) (map[string]BarcodeAction, error) {
+func ReadCsv(filename string) ([]BarcodeAction, error) {
 
 	// Open CSV file
 	csvfile, err := os.Open(filename)
@@ -136,7 +196,7 @@ func ReadCsv(filename string) (map[string]BarcodeAction, error) {
 	csvreader.FieldsPerRecord = -1 // -1 Variable Records
 
 	// Read Line by Line
-	barcodeActions := make(map[string]BarcodeAction)
+	barcodeActions := []BarcodeAction{}
 
 	for {
 		line, err := csvreader.Read()
@@ -148,21 +208,24 @@ func ReadCsv(filename string) (map[string]BarcodeAction, error) {
 			continue
 		}
 
-		if len(line) < 2 {
-			fmt.Printf("skip line due to missing fields. need %d fields got %d, line: %v", 2, len(line), line)
+		if len(line) < 3 {
+			fmt.Printf("skip line due to missing fields. need %d fields got %d, line: %v\n", 4, len(line), line)
 			continue
 		}
 
 		barcode := line[0]
 		actionKey := line[1]
-		values := line[2:]
+		bookletPageType := line[2]
+		values := line[3:]
 
 		barcodeAction := BarcodeAction{
-			ActionKey: actionKey,
-			Values:    values,
+			Barcode:         barcode,
+			ActionKey:       actionKey,
+			BookletPageType: bookletPageType,
+			Values:          values,
 		}
 
-		barcodeActions[barcode] = barcodeAction
+		barcodeActions = append(barcodeActions, barcodeAction)
 	}
 
 	return barcodeActions, nil

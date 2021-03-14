@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print { 
+    body { 
+       margin:0;
+       width: 210mm;
+       height: 297mm;
+    } 
+}
+
+.mypage {
+    page-break-after: always;
+    width: 190mm;
+    height: 297mm;
+}
+
+.mypage .top {
+    /*height: 148mm;*/
+    position: relative;
+    height: 50%;
+    border: 1mm solid green;
+    margin: auto;
+
+    border-bottom: 0.5mm black dashed;
+}
+
+.mypage .bottom {
+    position: relative;
+    height: 49%;
+    border: 1mm solid green;
+    margin: auto;
+}
+
+.mypage.odd {
+    margin-left: 20mm;
+}
+
+.mypage.even {
+    position: relative;
+    margin-left: 0mm;
+}
+
+
+.barcode-small {
+    height: 80px;
+}
+
+.mypage table {
+    position: relative;
+    top: 20mm;
+    width: 95%;
+    text-align: center;
+    border: 1px solid blue;
+}
+
+.mypage.even table {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.mypage table td {
+    text-align: center;
+    border: 1px solid gray;
+}
+
+.svg {
+    position: relative;
+    margin: auto;
+    width: 80%;
+    /*border: 1px solid red; */
+}
+
+.x3_rows_4_cols_page table td {
+    width: 33%;
+    height: 25mm;
+}
+
+.x4_rows_4_cols_page table td {
+    width: 25%;
+    height: 20mm;
+}

@@ -1,8 +1,46 @@
-XX00STOP,mpc_stop,
-XX00PLAY,mpc_play,
-XX00PAUSE,mpc_pause,
-XX00NEXT,mpc_next,
-01,default,Musik/Mikroboy/Nichts ist umsonst
-4250137247250,default,Musik/Jupiter Jones/Holiday in Catatonia
-093624916420,default,Musik/Michael Bublé/Nobody But Me
-ABCabc1234,default,TEEEEST
+# BARCODE, ACTION, BOOKLET_PAGE_TYPE, VALUES1, VALUE2, ...
+#   BOOKLET_PAGETYPES
+#       - single_with_cover
+#       - 3_rows_4_cols_page
+#       - 4_rows_4_cols_page
+# PAGE 1
+XX00PLAY,mpc_play,3_rows_4_cols_page
+XX00PAUSE,mpc_pause,3_rows_4_cols_page
+XX00STOP,mpc_stop,3_rows_4_cols_page
+XX00NEXT,mpc_next,3_rows_4_cols_page
+XX00VOLUP,mpc_volume_up,3_rows_4_cols_page,10
+XX00VOLDOWN,mpc_volume_down,3_rows_4_cols_page,10
+XX00RANDOMON,mpc_random,3_rows_4_cols_page,on
+XX00RANDOMOFF,mpc_random,3_rows_4_cols_page,off
+XX00KILLME,kill_me,3_rows_4_cols_page,off
+EMTPY01,nop,3_rows_4_cols_page,off
+EMTPY02,nop,3_rows_4_cols_page,off
+EMTPY03,nop,3_rows_4_cols_page,off
+# PAGE2
+XX00PLAY01,mpc_play_number,4_rows_4_cols_page,1
+XX00PLAY02,mpc_play_number,4_rows_4_cols_page,2
+XX00PLAY03,mpc_play_number,4_rows_4_cols_page,3
+XX00PLAY04,mpc_play_number,4_rows_4_cols_page,4
+XX00PLAY05,mpc_play_number,4_rows_4_cols_page,5
+XX00PLAY06,mpc_play_number,4_rows_4_cols_page,6
+XX00PLAY07,mpc_play_number,4_rows_4_cols_page,7
+XX00PLAY08,mpc_play_number,4_rows_4_cols_page,8
+XX00PLAY09,mpc_play_number,4_rows_4_cols_page,9
+XX00PLAY10,mpc_play_number,4_rows_4_cols_page,10
+XX00PLAY11,mpc_play_number,4_rows_4_cols_page,11
+XX00PLAY12,mpc_play_number,4_rows_4_cols_page,12
+XX00PLAY13,mpc_play_number,4_rows_4_cols_page,13
+XX00PLAY14,mpc_play_number,4_rows_4_cols_page,14
+XX00PLAY15,mpc_play_number,4_rows_4_cols_page,15
+XX00PLAY16,mpc_play_number,4_rows_4_cols_page,16
+XX00PLAY17,mpc_play_number,4_rows_4_cols_page,17
+XX00PLAY18,mpc_play_number,4_rows_4_cols_page,18
+XX00PLAY19,mpc_play_number,4_rows_4_cols_page,19
+XX00PLAY20,mpc_play_number,4_rows_4_cols_page,20
+#
+# Music on NAS
+#
+#01,default,single_with_cover,Musik/Mikroboy/Nichts ist umsonst
+4250137247250,default,single_with_cover,Musik/Jupiter Jones/Holiday in Catatonia
+#093624916420,default,single_with_cover,Musik/Michael Bublé/Nobody But Me
+#ABCabc1234,default,single_with_cover,TEEEEST

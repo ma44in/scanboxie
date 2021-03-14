@@ -76,8 +76,8 @@ func (sb *Scanboxie) processEvents(pr *io.PipeReader, barcodeConfig *BarcodeConf
 		fmt.Printf("Got input line: %s\n", input)
 
 		// Lookup BarcodeAction for received barcode input
-		barcodeAction, ok := (*barcodeConfig).BarcodeActions[input]
-		if ok {
+		barcodeAction := (*barcodeConfig).GetBarcodeAction(input)
+		if barcodeAction != nil {
 			templateData := struct {
 				Values []string
 			}{

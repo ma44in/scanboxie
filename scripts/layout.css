@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+@media print { 
+    body { 
+       margin:0;
+    } 
+}
+
+.mypage {
+    page-break-after: always;
+    width: 100%;
+}
+
+.mypage .top {
+    height: 50%;
+    border-bottom: 2px black dashed;
+}
+
+.mypage .bottom {
+    height: 49%;
+}
+
+.mypage.odd table {
+    position: relative;
+    top: 50px;
+    left: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mypage.even table {
+    position: relative;
+    top: 50px;
+    left: -50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.barcode-small {
+    height: 80px;
+}

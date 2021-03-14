@@ -27,121 +27,69 @@ egrep -v "^#|^[[:space:]]+$" /mnt/z/Musik/barcodes.csv | while read LINE; do
     fi
 done
 
+cat ./01_layout_2_per_page_partA.html
+
+PAGE_ODD_OR_EVEN="odd"
+
+find ./output/ -name "[0-9]*.svg" | sort | xargs -L24 | while read SVG1 SVG2 SVG3 SVG4 SVG5 SVG6 SVG7 SVG8 SVG9 SVG10 SVG11 SVG12 SVG13 SVG14 SVG15 SVG16 SVG17 SVG18 SVG19 SVG20 SVG21 SVG22 SVG23 SVG24; do
+  if [ "${PAGE_ODD_OR_EVEN}" = "odd" ]; then
+    PAGE_ODD_OR_EVEN="even"
+  else
+    PAGE_ODD_OR_EVEN="odd"
+  fi
+
 cat <<EOF
-<html>
-<head>
-<style>
-  .header, .header-space,
-  .footer, .footer-space {
-    height: 50px;
-  }
-  
-  .header {
-    background: red;
-    position: fixed;
-    top: 0;
-  }
-  
-  .footer {
-    position: fixed;
-    bottom: 0;
-  }
-
-  @page:first {
-    .header {
-      content: normal;
-    }
-  }
-
-  @media print {
-    .header {
-        background-color: red !important;
-        -webkit-print-color-adjust: exact; 
-    }
-  }
-
-  .center {
-    margin: auto;
-    width: 100%;
-    padding: 10px;
-  }
-
-  table.center {
-    margin-left:auto; 
-    margin-right:auto;
-  }
-
-  body {
-    font-family: Algerian;
-  }
-
-  .barcode-small {
-    height: 80px;
-  }
-
-</style>
-</head>
-<body>
-EOF
-
-cat ./book_page0.html
-cat ./book_page1.html
-
-BARCODE_IMG_ATTRIBUTES=""
-#BARCODE_IMG_ATTRIBUTES='height="100px"'
-
-find ./output/ -name "[0-9]*.svg" | sort | xargs -L12 | while read SVG1 SVG2 SVG3 SVG4 SVG5 SVG6 SVG7 SVG8 SVG9 SVG10 SVG11 SVG12; do
-cat <<EOF
-<div style="page-break-after: always;" class="center">
-  <table>
-    <thead><tr><td>
-      <div class="header-space">&nbsp;</div>
-    </td></tr></thead>
-    <tbody><tr><td>
-      <div class="content">
-      
-      <table>
-        <tr>
-          <td width="50%"><img class="barcode" src="${SVG1}"/></td>
-          <td width="50%"><img class="barcode" src="${SVG2}"/></td>
-        </tr>
-        <tr>
-          <td><img class="barcode" src="${SVG3}"/></td>
-          <td><img class="barcode" src="${SVG4}"/></td>
-        </tr>
-        <tr>
-          <td><img class="barcode" src="${SVG5}"/></td>
-          <td><img class="barcode" src="${SVG6}"/></td>
-        </tr>
-        <tr>
-          <td><img class="barcode" src="${SVG7}"/></td>
-          <td><img class="barcode" src="${SVG8}"/></td>
-        </tr>
-        <tr>
-          <td><img class="barcode" src="${SVG9}"/></td>
-          <td><img class="barcode" src="${SVG10}"/></td>
-        </tr>
-        <tr>
-          <td><img class="barcode" src="${SVG11}"/></td>
-          <td><img class="barcode" src="${SVG12}"/></td>
-        </tr>
-      </table>     
-      
-      </div>
-    </td></tr></tbody>
-    <tfoot><tr><td>
-      <div class="footer-space">&nbsp;</div>
-    </td></tr></tfoot>
-  </table>
-
-  <div class='header'>Header</div>
-  <div class='footer'>Footer</div>
-
+<div class="mypage ${PAGE_ODD_OR_EVEN}">
+  <div class="top">
+    <table>
+      <tr>
+        <td><img class="barcode" src="${SVG1}" /></td>
+        <td><img class="barcode" src="${SVG2}" /></td>
+        <td><img class="barcode" src="${SVG3}" /></td>
+      </tr>
+      <tr>
+        <td><img class="barcode" src="${SVG4}" /></td>
+        <td><img class="barcode" src="${SVG5}" /></td>
+        <td><img class="barcode" src="${SVG6}" /></td>
+      </tr>
+      <tr>
+        <td><img class="barcode" src="${SVG7}" /></td>
+        <td><img class="barcode" src="${SVG8}" /></td>
+        <td><img class="barcode" src="${SVG9}" /></td>
+      </tr>
+      <tr>
+        <td><img class="barcode" src="${SVG10}" /></td>
+        <td><img class="barcode" src="${SVG11}" /></td>
+        <td><img class="barcode" src="${SVG12}" /></td>
+      </tr>
+    </table>
+  </div>
+  <div class="bottom">
+    <table>
+      <tr>
+        <td><img class="barcode" src="${SVG13}" /></td>
+        <td><img class="barcode" src="${SVG14}" /></td>
+        <td><img class="barcode" src="${SVG15}" /></td>
+      </tr>
+      <tr>
+        <td><img class="barcode" src="${SVG16}" /></td>
+        <td><img class="barcode" src="${SVG17}" /></td>
+        <td><img class="barcode" src="${SVG18}" /></td>
+      </tr>
+      <tr>
+        <td><img class="barcode" src="${SVG19}" /></td>
+        <td><img class="barcode" src="${SVG20}" /></td>
+        <td><img class="barcode" src="${SVG21}" /></td>
+      </tr>
+      <tr>
+        <td><img class="barcode" src="${SVG22}" /></td>
+        <td><img class="barcode" src="${SVG23}" /></td>
+        <td><img class="barcode" src="${SVG24}" /></td>
+      </tr>
+    </table>
+  </div>
 </div>
 EOF
 done
 
-cat <<EOF
-</body>
-</html>
-EOF
+cat ./01_layout_2_per_page_partC.html
