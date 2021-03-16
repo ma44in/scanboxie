@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="static/css/layout.css">
+</head>
+
+<body>
+  {{range $index, $Page := .GetPages}}
+    {{if mod $index 2 }}
+    {{if mod $index 4 }}
+    <div class="mypage odd"> <!-- Begin mypage-->
+    {{else}}
+    <div class="mypage even"> <!-- Begin mypage-->
+    {{end}}
+      <div class="top"> <!-- Begin top -->
+        {{$Page.GetContent}}
+      </div> <!-- End top -->
+    {{else}}
+      <div class="bottom"> <!-- Begin bottom -->
+        {{$Page.GetContent}}
+      </div> <!-- End bottom -->
+    </div> <!-- End mypage-->
+    {{end}}
+    {{if and (mod $index 2) (eq (add $index 1) $.GetPageCount) }}
+    <div class="bottom"></div> <!-- emtpy bottom, because last page reached-->
+    </div> <!-- End mypage-->
+    {{end}}
+  {{end}}
+</body>
+
+</html>

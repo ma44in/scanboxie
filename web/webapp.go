@@ -20,25 +20,6 @@ type App struct {
 	BarcodeConfig *scanboxie.BarcodeConfig
 }
 
-func parseTemplates(templateDir string, filenames ...string) (templates map[string]*template.Template) {
-	if len(filenames) == 0 {
-		log.Fatal("You must pass at least one file to parseTemplates")
-	}
-	templates = make(map[string]*template.Template)
-
-	for _, filename := range filenames {
-		t := template.New("")
-		t, _ = t.ParseFiles(filepath.Join(templateDir, filename))
-		//t.Funcs()
-		templates[filename] = t
-
-		// templates[filename] = template.Must(template.ParseFiles(
-		// 	filepath.Join(templateDir, filename),
-		// )).Funcs(template.FuncMap{"mod": func(i, j int) bool { return i%j == 0 }})
-	}
-	return templates
-}
-
 // NewApp returns the app
 func NewApp(barcodeDirMapFilepath string) *App {
 	barcodeConfig, err := scanboxie.NewBarcodeConfig(barcodeDirMapFilepath, false)

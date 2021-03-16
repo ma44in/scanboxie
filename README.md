@@ -30,3 +30,25 @@ Execute Ansible Playbook.
 cd ./setup-pi
 ansible-playbook -i ./inventory ./playbook.yml
 ```
+
+## Cover Arts using beets
+
+```sh
+apt install python3-pip
+pip3 install https://github.com/beetbox/beets/tarball/master
+```
+
+ ~/.local/bin/beet import /mnt/z/Musik
+
+ ~/.local/bin/beet import --nocopy --nowrite --quiet /mnt/z/Musik
+
+ ~/.config/beets/config.yaml
+
+ plugins: fetchart
+
+fetchart:
+    cautious: true
+    cover_names: front back
+    sources: amazon *
+
+~/.local/bin/beet fetchart -f Adele

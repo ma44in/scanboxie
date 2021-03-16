@@ -5,3 +5,4 @@ scanboxie-arm
 *.svg
 mybarcode.csv
 out.html
+web/static/images/*

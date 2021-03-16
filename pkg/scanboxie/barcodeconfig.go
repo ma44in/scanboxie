@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
+	"html/template"
 	"image/color"
 	"io"
 	"os"
@@ -35,7 +36,7 @@ type BarcodeAction struct {
 }
 
 // GetBarcodeSvg returns Barcode Image as SVG
-func (ba BarcodeAction) GetBarcodeSvg() string {
+func (ba BarcodeAction) GetBarcodeSvg() template.HTML {
 	// Thx to: https://github.com/boombuler/barcode/issues/57
 
 	bc, err := code128.Encode(ba.Barcode)
@@ -68,7 +69,7 @@ func (ba BarcodeAction) GetBarcodeSvg() string {
 	}
 
 	canvas.End()
-	return buf.String()
+	return template.HTML(buf.String())
 }
 
 // NewBarcodeConfig create a new BarcodeConfig from given json file

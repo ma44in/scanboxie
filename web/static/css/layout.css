@@ -26,7 +26,7 @@ body {
     /*height: 148mm;*/
     position: relative;
     height: 50%;
-    border: 1mm solid green;
+    /*border: 1mm solid green;*/
     margin: auto;
 
     border-bottom: 0.5mm black dashed;
@@ -35,7 +35,7 @@ body {
 .mypage .bottom {
     position: relative;
     height: 49%;
-    border: 1mm solid green;
+    /*border: 1mm solid green;*/
     margin: auto;
 }
 
@@ -58,7 +58,7 @@ body {
     top: 20mm;
     width: 95%;
     text-align: center;
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
 }
 
 .mypage.even table {
