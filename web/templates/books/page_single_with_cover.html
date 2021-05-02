@@ -1,10 +1,10 @@
 <div class="single_with_cover">
   <table>
     <tr>
-      <td colspan="2">{{(index .BarcodeActions 0).Values}}</td>
+      <td colspan="2">{{(index .BarcodeActions 0).Value}}</td>
     </tr>
     <tr>
-      <td><img style="height: 90mm;" src="static/_scanboxie_covers/{{ .GetBarcodeByIdx 0 }}.jpg" alt="cover"/></td>
+      <td><img style="height: 90mm;" src="images/{{ .GetBarcodeByIdx 0 }}.jpg" alt="cover"/></td>
       <td>
         <div class="svg">{{ .GetBarcodeSvgByIdx 0 }}</div>
         <span class="caption">{{ .GetBarcodeByIdx 0 }}</span>

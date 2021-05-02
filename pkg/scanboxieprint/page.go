@@ -2,11 +2,11 @@ package scanboxieprint
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
-	"path"
-	"path/filepath"
+	"io/fs"
 	"scanboxie/pkg/scanboxie"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var funcMap = template.FuncMap{
@@ -21,14 +21,10 @@ type Pagetype struct {
 	template           *template.Template
 }
 
-func NewPagetype(name string, maxBarcodesPerPage int, templateDir string) *Pagetype {
-	templateFilepath := filepath.Join(templateDir, fmt.Sprintf("%s.html", name))
-
-	tmpl := template.New(path.Base(templateFilepath)).Funcs(funcMap)
-	var err error
-	tmpl, err = tmpl.ParseFiles(templateFilepath)
+func NewPagetype(name string, maxBarcodesPerPage int, templateFS fs.FS) *Pagetype {
+	tmpl, err := template.ParseFS(templateFS, name+".html")
 	if err != nil {
-		panic("could not parse template")
+		log.Fatalf("could not parse template for page type %s, error: %v\n", name, err)
 	}
 
 	var pagetype Pagetype
@@ -46,6 +42,8 @@ type Page struct {
 
 // GetContent returns templated content of this page
 func (page Page) GetContent() template.HTML {
+	log.Debugf("GetContent() for page %v\n", page)
+
 	var tpl bytes.Buffer
 	if err := page.Pagetype.template.Execute(&tpl, page); err != nil {
 		panic("Template execute error:" + err.Error())
@@ -59,7 +57,9 @@ func (page Page) GetBarcodeSvgByIdx(idx int) template.HTML {
 		return ""
 	}
 
-	return template.HTML(page.BarcodeActions[idx].GetBarcodeSvg())
+	barcode := (page.BarcodeActions[idx]).Barcode
+
+	return GetBarcodeSvg(barcode)
 }
 
 func (page Page) GetBarcodeByIdx(idx int) string {

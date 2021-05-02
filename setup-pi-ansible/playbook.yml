@@ -2,12 +2,9 @@
 - hosts: all
   gather_facts: false
   vars:
-    scanboxie_event_file_path: "/dev/input/by-id/usb-Netum._HIDKB_18502-event-kbd"
-    scanboxie_barcodemap_file_path: "/var/lib/mpd/music/Musik/barcodes.csv"
+    scanboxie_barcodemap_file_path: "/var/lib/mpd/music/Musik/BarcodeActions.yml"
   tasks:
-
   # MPD AND MPC SETUP
-
   - name: "install mpd (music player deamon) and mpc (music player client)"
     tags: ["mpd"]
     become: true

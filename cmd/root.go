@@ -23,14 +23,19 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/spf13/viper"
+
+	log "github.com/sirupsen/logrus"
 )
 
-type config struct {
+type ScanboxieConfig struct {
+	Bindaddress string
+	Eventpath   string
+	ImageDir    string
 	CommandSets *scanboxie.CommandSets
 }
 
 var cfgFile string
-var conf *config
+var scanboxieConfig *ScanboxieConfig
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -40,23 +45,6 @@ var rootCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		eventPath := args[0]
-		barcodeDirMapFilepath := args[1]
-
-		watchForChanges, _ := cmd.Flags().GetBool("watch")
-
-		scanboxie, err := scanboxie.NewScanboxie(barcodeDirMapFilepath, conf.CommandSets, watchForChanges)
-		if err != nil {
-			fmt.Printf("Error: %v", err)
-			os.Exit(1)
-		}
-
-		fmt.Println("Listen and Process Events ...")
-		err = scanboxie.ListenAndProcessEvents(eventPath)
-		if err != nil {
-			fmt.Printf("Error: %v", err)
-			os.Exit(1)
-		}
 	},
 }
 
@@ -70,6 +58,8 @@ func Execute() {
 }
 
 func init() {
+	log.SetLevel(log.DebugLevel)
+
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
@@ -103,8 +93,8 @@ func initConfig() {
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	conf = &config{}
-	err = viper.Unmarshal(conf)
+	scanboxieConfig = &ScanboxieConfig{}
+	err = viper.Unmarshal(scanboxieConfig)
 	if err != nil {
 		fmt.Printf("unable to decode into config struct, %v", err)
 	}

@@ -1,0 +1,41 @@
+BarcodeActions:
+- {Barcode: XX00PLAY, Commandset: mpc_play, Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00PAUSE    , Commandset: mpc_pause,Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00STOP     , Commandset: mpc_stop, Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00NEXT     , Commandset: mpc_next, Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00VOLUP    , Commandset: mpc_volume_up, Value: 10, Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00VOLDOWN  , Commandset: mpc_volume_down, Value: 10, Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00RANDOMON , Commandset: mpc_random, Value: on, Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00RANDOMOFF, Commandset: mpc_random, Value: off, Pagetype: 3_rows_4_cols_page}
+- {Barcode: XX00KILLME   , Commandset: kill_me, Pagetype: 3_rows_4_cols_page}
+- {Barcode: EMTPY01      , Commandset: nop, Pagetype: 3_rows_4_cols_page}
+- {Barcode: EMTPY02      , Commandset: nop ,Pagetype: 3_rows_4_cols_page}
+- {Barcode: EMTPY03      , Commandset: nop, Pagetype: 3_rows_4_cols_page}
+# PAGE2
+- {Barcode: XX00PLAY01, Commandset: mpc_play_number, Value: 1, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY02, Commandset: mpc_play_number, Value: 2, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY03, Commandset: mpc_play_number, Value: 3, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY04, Commandset: mpc_play_number, Value: 4, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY05, Commandset: mpc_play_number, Value: 5, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY06, Commandset: mpc_play_number, Value: 6, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY07, Commandset: mpc_play_number, Value: 7, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY08, Commandset: mpc_play_number, Value: 8, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY09, Commandset: mpc_play_number, Value: 9, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY10, Commandset: mpc_play_number, Value: 10, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY11, Commandset: mpc_play_number, Value: 11, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY12, Commandset: mpc_play_number, Value: 12, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY13, Commandset: mpc_play_number, Value: 13, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY14, Commandset: mpc_play_number, Value: 14, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY15, Commandset: mpc_play_number, Value: 15, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY16, Commandset: mpc_play_number, Value: 16, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY17, Commandset: mpc_play_number, Value: 17, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY18, Commandset: mpc_play_number, Value: 18, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY19, Commandset: mpc_play_number, Value: 19, Pagetype: 4_rows_4_cols_page}
+- {Barcode: XX00PLAY20, Commandset: mpc_play_number, Value: 20, Pagetype: 4_rows_4_cols_page}
+# #
+# # Music on NAS
+# #
+# #01,default,single_with_cover,Musik/Mikroboy/Nichts ist umsonst
+# 4250137247250,default,single_with_cover,Musik/Jupiter Jones/Holiday in Catatonia
+# #093624916420,default,single_with_cover,Musik/Michael Bublé/Nobody But Me
+# #ABCabc1234,default,single_with_cover,TEEEEST

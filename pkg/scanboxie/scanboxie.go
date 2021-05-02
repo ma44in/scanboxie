@@ -4,26 +4,28 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"scanboxie/pkg/device"
 )
 
 // Scanboxie app
 type Scanboxie struct {
-	barcodeConfig *BarcodeConfig
-	commandSets   *CommandSets
+	BarcodeConfig *BarcodeConfig
+	CommandSets   *CommandSets
 }
 
 // NewScanboxie returns a new Scanboxie app
-func NewScanboxie(barcodeDirMapFilepath string, commandSets *CommandSets, watchForChanges bool) (*Scanboxie, error) {
-	barcodeConfig, err := NewBarcodeConfig(barcodeDirMapFilepath, watchForChanges)
+func NewScanboxie(barcodeDirMapFilepath string, commandSets *CommandSets) (*Scanboxie, error) {
+	barcodeConfig, err := NewBarcodeConfig(barcodeDirMapFilepath, commandSets)
 	if err != nil {
-		return nil, fmt.Errorf("could not load barcode config from %s. error: %v", barcodeConfig, err)
+		return nil, fmt.Errorf("could not load barcode config from %v. error: %v", barcodeConfig, err)
 	}
+	log.Printf("Loaded Barcode Config:\n%v\n\n", barcodeConfig)
 
 	scanboxie := &Scanboxie{
-		barcodeConfig: barcodeConfig,
-		commandSets:   commandSets,
+		BarcodeConfig: barcodeConfig,
+		CommandSets:   commandSets,
 	}
 
 	return scanboxie, nil
@@ -79,16 +81,16 @@ func (sb *Scanboxie) processEvents(pr *io.PipeReader, barcodeConfig *BarcodeConf
 		barcodeAction := (*barcodeConfig).GetBarcodeAction(input)
 		if barcodeAction != nil {
 			templateData := struct {
-				Values []string
+				Value string
 			}{
-				Values: barcodeAction.Values,
+				Value: barcodeAction.Value,
 			}
 
-			commandSet := (*commandSets)[barcodeAction.ActionKey]
+			commandSet := (*commandSets)[barcodeAction.Commandset]
 
 			err := commandSet.ExecuteCommands(templateData)
 			if err != nil {
-				fmt.Printf("error execution command set with key %s. error: %v", barcodeAction.ActionKey, err)
+				fmt.Printf("error execution command set with key %s. error: %v", barcodeAction.Commandset, err)
 			}
 		}
 	}
@@ -109,7 +111,7 @@ func (sb *Scanboxie) ListenAndProcessEvents(eventPath string) error {
 	fmt.Printf("Found device: %s\n", targetDevice.Name)
 
 	pr := sb.readEventsToPipe(targetDevice)
-	err := sb.processEvents(pr, sb.barcodeConfig, sb.commandSets)
+	err := sb.processEvents(pr, sb.BarcodeConfig, sb.CommandSets)
 
 	return err
 }

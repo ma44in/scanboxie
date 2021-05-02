@@ -16,6 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
+	"os"
+	"scanboxie/pkg/scanboxie"
 	"scanboxie/web"
 
 	"github.com/spf13/cobra"
@@ -30,8 +33,20 @@ var serverCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		barcodeDirMapFilepath := args[0]
 
-		webapp := web.NewApp(barcodeDirMapFilepath)
-		webapp.Serve("127.0.0.1:9999")
+		scanboxie, err := scanboxie.NewScanboxie(barcodeDirMapFilepath, scanboxieConfig.CommandSets)
+		if err != nil {
+			fmt.Printf("Error: %v", err)
+			os.Exit(1)
+		}
+
+		fmt.Printf("Wait for events on %s\n", scanboxieConfig.Eventpath)
+		if scanboxieConfig.Eventpath != "" {
+			go scanboxie.ListenAndProcessEvents(scanboxieConfig.Eventpath)
+		}
+
+		fmt.Printf("Listen on %s\n", scanboxieConfig.Bindaddress)
+		webapp := web.NewApp(scanboxie, scanboxieConfig.ImageDir)
+		webapp.Serve(scanboxieConfig.Bindaddress)
 
 	},
 }

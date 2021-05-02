@@ -4,6 +4,11 @@ Execute commands based on barcode scans with the primary goal to play music on a
 
 TODO
 
+## Quickstart
+
+* Prepare RasperryPi
+* 
+
 ## Build
 
     GOOS=linux GOARCH=arm GOARM=5 go build -o scanboxie-arm

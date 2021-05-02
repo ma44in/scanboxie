@@ -1,15 +1,18 @@
 ---
+bindaddress: "0.0.0.0:9999"
+eventpath: "/dev/input/by-id/usb-Netum._HIDKB_18502-event-kbd"
+imagedir: "/var/lib/mpd/music/Musik/_scanboxie_covers"
 commandsets:
   mpc_add_and_play:
     - commandstring: "mpc clear"
-    - commandstring: "mpc add \"{{index .Values 0}}\""
+    - commandstring: "mpc add \"{{.Value}}\""
     - commandstring: "mpc play"
   mpc_stop:
     - commandstring: "mpc stop"
   mpc_play:
     - commandstring: "mpc play"
   mpc_play_number:
-    - commandstring: "mpc play {{index .Values 0}}"
+    - commandstring: "mpc play {{.Value}}"
   mpc_pause:
     - commandstring: "mpc pause"
   mpc_next:
@@ -19,9 +22,9 @@ commandsets:
   mpc_random_off:
     - commandstring: "mpc randmon off"
   mpc_volume_up:
-    - commandstring: "mpc volume +{{index .Values 0}}"
+    - commandstring: "mpc volume +{{.Value}}"
   mpc_volume_down:
-    - commandstring: "mpc volume -{{index .Values 0}}"
+    - commandstring: "mpc volume -{{.Value}}"
   kill_me:
     - commandstring: "pkill scanboxie"
   

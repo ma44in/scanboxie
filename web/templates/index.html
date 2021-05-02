@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="static/css/layout.css">
+</head>
+
+<body>
+SCANBOXIE<a href="/book">BOOK</a>
+
+<h2>Show Barcode Actions</h2>
+<ul>
+  {{range .BarcodeConfig.BarcodeActions}}
+  <li>{{ .Barcode }} -> {{ .Commandset }} ({{ .Value }})</li>
+  {{end}}
+</ul>
+
+<h2>Add Barcode Actions</h2>
+
+Available Commandsets:<br/>
+<ul>
+  {{range $key, $commandSet := .CommandSets}}
+  <li>
+    {{ $key }}
+    <ul>
+      {{range  $commandSet}}
+      <li>{{ .CommandString }}</li>
+      {{end}}
+    </ul>
+
+  </li>
+  {{end}}
+</ul>
+
+<form action="/addBarcodeAction" method="post">
+  <label for="barcode">Barcode:</label>
+  <input type="text" name="barcode"><br/>
+  
+  <label for="commandset">Choose a commandset:</label>
+  <select id="commandset" name="commandset">
+    {{range $key, $commandSet := .CommandSets}}
+    <option value="{{ $key }}">{{ $key }}</option>
+    {{end}}
+  </select><br/>
+  
+  <label for="value">Value:</label>
+  <input type="text" name="value"><br/>
+
+  <input type="submit" value="Add barcode">
+</form>
+
+</body>
+
+</html>

@@ -4,5 +4,6 @@ set -x -e -u
 
 GOOS=linux GOARCH=arm GOARM=5 go build -o scanboxie-arm
 
-cd ./setup-pi-ansible
-ansible-playbook -i ./inventory ./playbook.yml --tags copy-scanboxie-binary
+set +x
+echo "Deploy with:"
+echo "  ansible-playbook -i ./setup-pi-ansible/inventory ./setup-pi-ansible/playbook.yml --tags copy-scanboxie-binary"
