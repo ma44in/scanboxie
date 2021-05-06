@@ -11,8 +11,9 @@ import (
 
 // Scanboxie app
 type Scanboxie struct {
-	BarcodeConfig *BarcodeConfig
-	CommandSets   *CommandSets
+	BarcodeConfig      *BarcodeConfig
+	CommandSets        *CommandSets
+	lastScannedBarcode string
 }
 
 // NewScanboxie returns a new Scanboxie app
@@ -76,6 +77,7 @@ func (sb *Scanboxie) processEvents(pr *io.PipeReader, barcodeConfig *BarcodeConf
 	for scanner.Scan() {
 		input := scanner.Text()
 		fmt.Printf("Got input line: %s\n", input)
+		sb.lastScannedBarcode = input
 
 		// Lookup BarcodeAction for received barcode input
 		barcodeAction := (*barcodeConfig).GetBarcodeAction(input)
@@ -114,4 +116,8 @@ func (sb *Scanboxie) ListenAndProcessEvents(eventPath string) error {
 	err := sb.processEvents(pr, sb.BarcodeConfig, sb.CommandSets)
 
 	return err
+}
+
+func (sb *Scanboxie) GetLastScannedBarcode() string {
+	return sb.lastScannedBarcode
 }
