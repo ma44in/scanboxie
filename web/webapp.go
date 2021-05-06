@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"scanboxie/pkg/scanboxie"
+	"scanboxie/pkg/scanboxieprint"
 
 	"github.com/gorilla/mux"
 )
@@ -17,15 +18,21 @@ var filesystemContent embed.FS
 type App struct {
 	router        *mux.Router
 	imageDir      string
+	scanboxie     *scanboxie.Scanboxie
+	ScanboxieBook *scanboxieprint.Book
 	BarcodeConfig *scanboxie.BarcodeConfig
 	CommandSets   *scanboxie.CommandSets
 }
 
 // NewApp returns the app
 func NewApp(scanboxie *scanboxie.Scanboxie, imageDir string) *App {
+	scanboxieBook := scanboxieprint.NewBook(getFileSystem("templates/books"))
+
 	webapp := &App{
 		router:        mux.NewRouter(),
 		imageDir:      imageDir,
+		scanboxie:     scanboxie,
+		ScanboxieBook: scanboxieBook,
 		BarcodeConfig: scanboxie.BarcodeConfig,
 		CommandSets:   scanboxie.CommandSets,
 	}
@@ -33,6 +40,10 @@ func NewApp(scanboxie *scanboxie.Scanboxie, imageDir string) *App {
 	webapp.router.HandleFunc("/", webapp.indexHandler).Name("index")
 	webapp.router.HandleFunc("/book", webapp.bookHandler).Name("book")
 	webapp.router.HandleFunc("/addBarcodeAction", webapp.addBarcodeActionHandler).Name("addBarcodeAction")
+	webapp.router.HandleFunc("/removeBarcodeAction", webapp.removeBarcodeActionHandler).Name("removeBarcodeAction")
+	webapp.router.HandleFunc("/saveBarcodeConfig", webapp.saveBarcodeConfigHandler).Name("saveBarcodeConfig")
+	webapp.router.HandleFunc("/getLastScannedBarcode", webapp.getLastScannedBarcodeHandler).Name("getLastScannedBarcode")
+	webapp.router.HandleFunc("/moveBarcodeAction", webapp.moveBarcodeActionHandler).Name("moveBarcodeAction")
 
 	return webapp
 }

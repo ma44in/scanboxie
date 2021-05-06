@@ -16,7 +16,7 @@ type Book struct {
 	pageTypes map[string]Pagetype
 }
 
-func NewBook(templates fs.FS, barcodeActions []*scanboxie.BarcodeAction) *Book {
+func NewBook(templates fs.FS) *Book {
 	var book Book
 
 	// book.html
@@ -28,8 +28,12 @@ func NewBook(templates fs.FS, barcodeActions []*scanboxie.BarcodeAction) *Book {
 	book.pageTypes["single_with_cover"] = *NewPagetype("page_single_with_cover", 1, templates)
 	book.pageTypes["empty"] = *NewPagetype("page_empty", 0, templates)
 
-	pages := []*Page{}
+	return &book
+}
 
+func (book Book) Write(w io.Writer, barcodeActions []*scanboxie.BarcodeAction) error {
+
+	pages := []*Page{}
 	var currentPage *Page
 	i := 0
 	for _, barcodeAction := range barcodeActions {
@@ -59,10 +63,6 @@ func NewBook(templates fs.FS, barcodeActions []*scanboxie.BarcodeAction) *Book {
 
 	book.pages = pages
 
-	return &book
-}
-
-func (book Book) Write(w io.Writer) error {
 	err := book.template.ExecuteTemplate(w, "book.html", book)
 	if err != nil {
 		return err
@@ -106,4 +106,12 @@ func (book Book) GetPages() []*Page {
 
 func (book Book) GetPageCount() int {
 	return len(book.pages)
+}
+
+func (book Book) GetPagetypeNames() []string {
+	var names []string
+	for key := range book.pageTypes {
+		names = append(names, key)
+	}
+	return names
 }

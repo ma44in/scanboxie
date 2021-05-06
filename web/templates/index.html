@@ -3,51 +3,127 @@
 
 <head>
   <link rel="stylesheet" href="static/css/layout.css">
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $(window).scroll(function() {
+      sessionStorage.scrollTop = $(this).scrollTop();
+    });
+
+    $(document).ready(function() {
+      if (sessionStorage.scrollTop != "undefined") {
+        $(window).scrollTop(sessionStorage.scrollTop);
+      }
+    });
+
+    function doSomething() {
+      $.get( "/getLastScannedBarcode", function( data ) {
+        $( "#barcodeInput" ).val( data );
+      });
+    }
+  </script>
+
 </head>
 
 <body>
-SCANBOXIE<a href="/book">BOOK</a>
 
-<h2>Show Barcode Actions</h2>
-<ul>
-  {{range .BarcodeConfig.BarcodeActions}}
-  <li>{{ .Barcode }} -> {{ .Commandset }} ({{ .Value }})</li>
-  {{end}}
-</ul>
-
-<h2>Add Barcode Actions</h2>
-
-Available Commandsets:<br/>
-<ul>
-  {{range $key, $commandSet := .CommandSets}}
-  <li>
-    {{ $key }}
-    <ul>
-      {{range  $commandSet}}
-      <li>{{ .CommandString }}</li>
+  <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-2">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/book">View Book</a>
+        </li>
+        <li>
+          <a class="btn btn-primary {{if not .BarcodeConfig.IsModified}}disabled{{end}}" href="/saveBarcodeConfig" role="button" aria-disabled="{{if .BarcodeConfig.IsModified}}false{{else}}true{{end}}">
+            Save Config
+          </a>
+        </li>
+        
+        
+      </ul>
+      {{if .BarcodeConfig.IsModified}}
+      <span class="badge badge-warning">Unsaved Changes</span>
       {{end}}
-    </ul>
+    </div>
+  </nav>
 
-  </li>
-  {{end}}
-</ul>
+  <div class="card m-2">
+    <div class="card-header">
+      Add new Barcode Action
+    </div>
+    <div class="card-body">
+      <form action="/addBarcodeAction" method="post">
+        <div class="form-row align-items-center">
+          <div class="col-auto">
+            <label for="barcode">Barcode (<a href="#" onclick="doSomething()">Use last scanned</a>)</label>
+            <input type="text" class="form-control mb-2" id="barcodeInput" name="barcode" value=""/>
+            
+          </div>
+          <div class="col-auto">
+            <label for="commandset">Commandset</label>
+            <select type="text" class="form-control mb-2" id="commandset" name="commandset">
+              {{range $key, $commandSet := .CommandSets}}
+              <option value="{{ $key }}">{{ $key }}</option>
+              {{end}}
+            </select>
+          </div>
+          <div class="col-auto">
+            <label for="value">Value</label>
+            <input type="text" class="form-control mb-2" id="value" name="value" placeholder="">
+          </div>
+          <div class="col-auto">
+            <label for="pagetype">Pagetype</label>
+            <select type="text" class="form-control mb-2" id="pagetype" name="pagetype">
+              {{range .ScanboxieBook.GetPagetypeNames}}
+              <option value="{{ . }}">{{ . }}</option>
+              {{end}}
+            </select>
+          </div>
+          
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Add Barcode Action</button>
+      </form>
+    </div>
+  </div>
 
-<form action="/addBarcodeAction" method="post">
-  <label for="barcode">Barcode:</label>
-  <input type="text" name="barcode"><br/>
-  
-  <label for="commandset">Choose a commandset:</label>
-  <select id="commandset" name="commandset">
-    {{range $key, $commandSet := .CommandSets}}
-    <option value="{{ $key }}">{{ $key }}</option>
-    {{end}}
-  </select><br/>
-  
-  <label for="value">Value:</label>
-  <input type="text" name="value"><br/>
-
-  <input type="submit" value="Add barcode">
-</form>
+  <table class="table m-2">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Barcode</th>
+        <th scope="col">Commandset</th>
+        <th scope="col">Value</th>
+        <th scope="col">Pagetype</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range $i, $barcodeAction := .BarcodeConfig.BarcodeActions}}
+      <tr>
+        <th scope="row">{{ $i }}</th>
+        <td scope="row">{{ $barcodeAction.Barcode }}</td>
+        <td>{{ $barcodeAction.Commandset }}</td>
+        <td>{{ $barcodeAction.Value }}</td>
+        <td>{{ $barcodeAction.Pagetype }}</td>
+        <td><a class="nav-link" href="/moveBarcodeAction?barcode={{$barcodeAction.Barcode}}&newIndex={{add $i -1}}">Up</a></td>
+        <td><a class="nav-link" href="/moveBarcodeAction?barcode={{$barcodeAction.Barcode}}&newIndex={{add $i +1}}">Down</a></td>
+        <td><a class="nav-link" href="/removeBarcodeAction?barcode={{$barcodeAction.Barcode}}">Remove</a></td>
+        </td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
 
 </body>
 
